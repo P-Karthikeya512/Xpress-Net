@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>XpressNet — History</title>
+  <link rel="stylesheet" href="tailwind.css" />
+  <link rel="stylesheet" href="history.css" />
+  <script defer src="auth.js"></script>
+  <script defer src="history.js"></script>
+</head>
+<body class="p-4 md:p-8">
+  <nav class="navbar flex items-center justify-between px-6 py-3 mb-8 max-w-5xl mx-auto">
+    <div>
+      <p class="text-lg font-bold text-indigo-600 leading-tight">XpressNet</p>
+      <p class="text-xs text-gray-400 leading-tight">Your prediction history</p>
+    </div>
+    <div class="flex items-center gap-3">
+      <a href="/static/dashboard.html" class="history-btn flex items-center gap-2 px-4 py-2 text-sm no-underline">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        </svg>
+        Dashboard
+      </a>
+      <button onclick="logout()" class="logout-btn flex items-center gap-2 text-sm px-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1"/>
+        </svg>
+        Logout
+      </button>
+    </div>
+  </nav>
+
+  <div class="history-card max-w-5xl mx-auto p-6 sm:p-8">
+    <div class="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+      <div>
+        <p class="text-sm font-semibold uppercase tracking-[0.2em] text-indigo-500">History</p>
+        <h1 class="mt-2 text-3xl font-bold text-gray-800">Prediction records</h1>
+      </div>
+      <p class="text-sm text-gray-400">Private and protected by your account session.</p>
+    </div>
+
+    <div id="loading-state" class="text-center py-16 text-gray-400 text-sm">Loading your history…</div>
+
+    <div id="error-state" class="hidden text-center py-16">
+      <p class="text-gray-700 font-semibold mb-1">Couldn't load your history</p>
+      <p class="text-gray-400 text-sm">Please try again in a moment.</p>
+    </div>
+
+    <div id="empty-state" class="hidden text-center py-14">
+      <div class="empty-icon">
+        <svg class="w-8 h-8 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="10" stroke-width="1.5"/>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 10h.01M15 10h.01M8 15c1.2 1 2.6 1.5 4 1.5s2.8-.5 4-1.5"/>
+        </svg>
+      </div>
+      <h2 class="text-xl font-bold text-gray-800 mb-1">No predictions yet</h2>
+      <p class="text-gray-400 text-sm mb-4">Your past predictions will show up here.</p>
+      <a href="/static/dashboard.html" class="try-model-link text-sm font-semibold text-indigo-600 hover:text-indigo-700">
+        Try the model
+      </a>
+    </div>
+
+    <div id="history-list" class="hidden space-y-3"></div>
+  </div>
+</body>
+</html>

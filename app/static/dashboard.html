@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>XpressNet — Predict Emotion</title>
+  <link rel="stylesheet" href="tailwind.css" />
+  <link rel="stylesheet" href="dashboard.css" />
+  <script defer src="auth.js"></script>
+  <script defer src="dashboard.js"></script>
+</head>
+<body class="p-4 md:p-8">
+  <nav class="navbar flex items-center justify-between gap-4 px-6 py-3 mb-8 max-w-5xl mx-auto">
+    <div>
+      <p class="text-lg font-bold text-indigo-600 leading-tight">XpressNet</p>
+      <p id="user-greeting" class="text-xs text-gray-400 leading-tight">AI Powered Emotion Recognition</p>
+    </div>
+    <div class="flex items-center gap-3">
+      <a href="/static/history.html" class="history-btn flex items-center gap-2 px-4 py-2 text-sm no-underline">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="10" stroke-width="2"/>
+          <polyline points="12 6 12 12 16 14" stroke-width="2"/>
+        </svg>
+        History
+      </a>
+      <button onclick="logout()" class="logout-btn flex items-center gap-2 text-sm px-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1"/>
+        </svg>
+        Logout
+      </button>
+    </div>
+  </nav>
+
+  <div class="max-w-5xl mx-auto grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
+    <section class="upload-card p-6 sm:p-8">
+      <div class="text-center mb-6">
+        <div class="cloud-icon">
+          <svg class="w-8 h-8 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0118.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+            <circle cx="12" cy="13" r="3" stroke-width="2"/>
+          </svg>
+        </div>
+        <h1 class="text-2xl font-bold text-gray-800 mb-1">Upload an image to predict emotion</h1>
+        <p class="text-gray-400 text-sm">Use gallery upload or your camera</p>
+      </div>
+
+      <div class="flex gap-3 mb-6">
+        <button id="btn-upload" class="option-btn active flex-1 flex flex-col items-center gap-2 py-4 text-sm font-medium text-gray-600" type="button">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+          </svg>
+          Upload from gallery
+        </button>
+        <button id="btn-camera" class="option-btn flex-1 flex flex-col items-center gap-2 py-4 text-sm font-medium text-gray-600" type="button">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M15 10l4.553-2.276A1 1 0 0121 8.723v6.554a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/>
+          </svg>
+          Use camera
+        </button>
+      </div>
+
+      <div id="error-box" class="hidden mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700" role="alert"></div>
+
+      <input type="file" id="file-input" accept="image/jpeg,image/png" class="hidden" />
+
+      <div id="panel-upload">
+        <div id="drop-zone" class="drop-zone flex flex-col items-center justify-center py-14 px-6 text-center">
+          <div id="upload-placeholder">
+            <svg class="w-14 h-14 text-indigo-400 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+            </svg>
+            <p class="text-gray-700 font-semibold text-lg mb-1">Upload here</p>
+            <p class="text-gray-400 text-sm mb-3">Drag and drop an image or click to browse</p>
+            <p class="text-gray-400 text-xs">Supports JPG, JPEG, PNG</p>
+          </div>
+
+          <div id="preview-container" class="hidden w-full">
+            <img id="preview-img" class="preview-img" src="" alt="Preview" />
+            <p id="preview-name" class="text-xs text-gray-400 mt-3 text-center"></p>
+          </div>
+        </div>
+      </div>
+
+      <div id="panel-camera" class="hidden">
+        <div class="relative rounded-2xl overflow-hidden bg-black">
+          <video id="camera-feed" autoplay playsinline></video>
+          <span id="live-badge" class="absolute top-3 left-3 bg-black/60 text-white text-xs px-3 py-1 rounded-full flex items-center gap-1.5">
+            <span class="w-2 h-2 bg-green-400 rounded-full inline-block"></span> Live
+          </span>
+        </div>
+        <canvas id="snap-canvas" class="hidden"></canvas>
+        <img id="snap-preview" class="preview-img mt-4 hidden" src="" alt="Captured" />
+        <div class="flex gap-3 mt-4">
+          <button id="btn-capture" class="flex-1 option-btn py-3 text-sm font-medium text-indigo-600 flex items-center justify-center gap-2" type="button">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10" stroke-width="2"/>
+              <circle cx="12" cy="12" r="4" stroke-width="2"/>
+            </svg>
+            Capture
+          </button>
+          <button id="btn-retake" class="hidden flex-1 option-btn py-3 text-sm font-medium text-gray-500 flex items-center justify-center gap-2" type="button">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M4 4v6h6M20 20v-6h-6M20 8a8 8 0 10-16 0m16 8a8 8 0 10-16 0"/>
+            </svg>
+            Retake
+          </button>
+        </div>
+      </div>
+
+      <div class="mt-6 flex flex-col sm:flex-row gap-3">
+        <button id="predict-btn" class="predict-btn flex-1 py-3 px-5 text-sm font-semibold text-white" type="button">
+          <span id="predict-btn-label">Predict emotion</span>
+        </button>
+        <a href="/static/history.html" class="history-btn inline-flex items-center justify-center gap-2 px-5 py-3 text-sm no-underline">
+          View history
+        </a>
+      </div>
+    </section>
+
+    <aside class="upload-card p-6 sm:p-8">
+      <div class="mb-6">
+        <p class="text-sm font-semibold uppercase tracking-[0.2em] text-indigo-500">Result</p>
+        <h2 class="mt-2 text-2xl font-bold text-gray-800">Latest prediction</h2>
+      </div>
+
+      <div id="result-empty" class="py-14 text-center text-gray-400">
+        No prediction yet. Upload an image or use the camera to begin.
+      </div>
+
+      <div id="result-card" class="hidden">
+        <div class="rounded-3xl border border-slate-200 bg-slate-50 p-6">
+          <div class="flex items-center justify-between gap-4">
+            <div>
+              <p id="result-emoji" class="text-4xl">🙂</p>
+              <h3 id="result-label" class="mt-3 text-3xl font-extrabold text-slate-900">Neutral</h3>
+            </div>
+            <div class="rounded-2xl bg-white px-4 py-3 text-right shadow-sm">
+              <p class="text-xs uppercase tracking-[0.2em] text-slate-400">Confidence</p>
+              <p id="result-confidence" class="mt-1 text-xl font-bold text-violet-600">0.0%</p>
+            </div>
+          </div>
+
+          <div class="mt-6 h-3 overflow-hidden rounded-full bg-slate-200">
+            <div id="confidence-bar" class="h-full rounded-full bg-gradient-to-r from-violet-500 to-fuchsia-500" style="width: 0%"></div>
+          </div>
+
+          <p id="result-time" class="mt-4 text-sm text-slate-500"></p>
+        </div>
+      </div>
+    </aside>
+  </div>
+</body>
+</html>

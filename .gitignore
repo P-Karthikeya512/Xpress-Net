@@ -1,0 +1,75 @@
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.py[cod]
+*$py.class
+
+# IDE / editor
+.vscode/
+.idea/
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build / packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Archives
+*.zip
+*.rar
+*.7z
+*.tar
+*.gz
+
+# Datasets
+dataset/
+data/
+
+# Uploaded/generated files
+uploads/
+
+# Model / training artifacts
+*.pth
+*.pt
+*.ckpt
+*.onnx
+*.h5
+*.keras
+*.pkl
+*.joblib
+checkpoints/
+runs/
+weights/
+
+# Coverage / test cache
+.coverage
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Temporary files
+tmp/
+temp/
