@@ -187,6 +187,3 @@ To use a retrained model in the API, copy/rename the saved weights to `app/ml/em
 
 ---
 
-## License
-
-No license file is currently included in this repository. Add one (e.g. MIT, Apache-2.0) if you intend for others to reuse this code.
