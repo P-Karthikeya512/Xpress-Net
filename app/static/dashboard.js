@@ -114,7 +114,7 @@ function resetResult() {
   document.getElementById("result-card").classList.add("hidden");
 }
 
-function displayResult(data) {
+function displayResult(data, roundTripMs) {
   const emotion = data.predicted_emotion || "Neutral";
   const confidenceValue = typeof data.confidence === "number" ? data.confidence : 0;
   const percentage = confidenceValue <= 1 ? confidenceValue * 100 : confidenceValue;
@@ -128,6 +128,15 @@ function displayResult(data) {
   document.getElementById("confidence-bar").style.width = `${Math.max(0, Math.min(100, percentage))}%`;
   document.getElementById("confidence-bar").className = `h-full rounded-full bg-gradient-to-r ${accent}`;
   document.getElementById("result-time").textContent = `Predicted at ${formatDateTime(data.created_at)}`;
+
+  const latencyParts = [];
+  if (typeof data.inference_ms === "number") {
+    latencyParts.push(`Model inference: ${data.inference_ms.toFixed(1)} ms`);
+  }
+  if (typeof roundTripMs === "number") {
+    latencyParts.push(`Round trip: ${roundTripMs.toFixed(1)} ms`);
+  }
+  document.getElementById("result-latency").textContent = latencyParts.join(" · ");
 
   document.getElementById("result-empty").classList.add("hidden");
   document.getElementById("result-card").classList.remove("hidden");
@@ -268,10 +277,12 @@ async function predictEmotion() {
     const formData = new FormData();
     formData.append("file", payload.blob, payload.filename);
 
+    const t0 = performance.now();
     const response = await apiFetch("/api/predict", {
       method: "POST",
       body: formData,
     });
+    const roundTripMs = performance.now() - t0;
 
     if (!response.ok) {
       const detail = await response.json().catch(() => null);
@@ -279,7 +290,7 @@ async function predictEmotion() {
     }
 
     const data = await response.json();
-    displayResult(data);
+    displayResult(data, roundTripMs);
   } catch (err) {
     showError(err.message || "Something went wrong.");
   } finally {

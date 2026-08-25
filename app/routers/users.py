@@ -68,6 +68,8 @@ def predict(
         db.commit()
         db.refresh(history)
 
+        history.inference_ms = result.get("inference_ms")
+
         return history
 
     except HTTPException:

@@ -30,3 +30,4 @@ class HistoryOut(BaseModel):
     predicted_emotion: str
     confidence: float
     created_at: datetime
+    inference_ms: float | None = None

@@ -1,4 +1,6 @@
+import time
 import torch
+
 from pathlib import Path
 from PIL import Image as PILImage
 
@@ -22,6 +24,7 @@ def load_model() -> ConvolutionalNetwork:
 model = load_model()
 
 def predict_emotion(image : PILImage.Image)->dict:
+    start = time.perf_counter()
     try:
         face_tensor = detect_n_preprocess_image(image)
     except HTTPException:
@@ -40,7 +43,10 @@ def predict_emotion(image : PILImage.Image)->dict:
         pred_idx = torch.argmax(probs, dim = 1).item()
         confidence = probs[0][pred_idx].item()
 
+    inference_ms = round((time.perf_counter() - start)*1000, 2)
+
     return{
         "predicted_emotion" : EMOTIONS[pred_idx],
-        "confidence" : round(confidence, 4)
+        "confidence" : round(confidence, 4),
+        "inference_ms" : inference_ms
     }
