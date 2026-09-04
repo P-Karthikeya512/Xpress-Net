@@ -1,0 +1,69 @@
+# ── Version control ──────────────────────────────────────────
+.git
+.github
+.gitignore
+
+# ── Virtual environments ─────────────────────────────────────
+.venv
+venv
+env
+
+# ── IDE / editor ─────────────────────────────────────────────
+.vscode
+.idea
+*.swp
+*.swo
+
+# ── Python caches ────────────────────────────────────────────
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+
+# ── Environment / secret files ───────────────────────────────
+.env
+app/.env
+.env.*
+certs/
+
+# ── Datasets and training artifacts ──────────────────────────
+dataset/
+data/
+train.ipynb
+*.ipynb
+.ipynb_checkpoints
+
+# ── Archives ─────────────────────────────────────────────────
+app.zip
+*.zip
+*.tar
+*.tar.gz
+*.rar
+*.7z
+
+# ── Uploaded images (runtime data, not build-time) ───────────
+app/uploads/
+
+# ── Test / lint caches ───────────────────────────────────────
+.pytest_cache
+.mypy_cache
+.ruff_cache
+htmlcov
+.coverage
+
+# ── Build / packaging ───────────────────────────────────────
+build/
+dist/
+*.egg-info
+
+# ── OS files ─────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ── Documentation (not needed at runtime) ────────────────────
+README.md
+LICENSE
+
+# ── NOTE: Do NOT exclude these (required ML model weights) ───
+# app/ml/emotion_model.pth
+# app/ml/yolov8n-face.pt
