@@ -52,8 +52,6 @@ data/
 uploads/
 
 # Model / training artifacts
-*.pth
-*.pt
 *.ckpt
 *.onnx
 *.h5
