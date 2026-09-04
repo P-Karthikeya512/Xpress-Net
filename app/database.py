@@ -2,8 +2,16 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, DeclarativeBase
 from app.config import settings
 
+connect_args = {}
 
-engine = create_engine(settings.sqlalchemy_database_url, pool_pre_ping=True)
+if settings.sqlalchemy_database_url.startswith("mysql+pymysql://"):
+    connect_args = {
+        "ssl": {
+            "ca": settings.mysql_ca_path
+        }
+    }
+
+engine = create_engine(settings.sqlalchemy_database_url, connect_args=connect_args, pool_pre_ping=True)
 
 SessionLocal = sessionmaker(autocommit = False, autoflush=False, bind=engine)
 
