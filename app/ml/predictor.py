@@ -11,13 +11,8 @@ from app.ml.model import ConvolutionalNetwork
 
 
 EMOTIONS = [
-    "Angry",
-    "Disgust",
-    "Fear",
-    "Happy",
-    "Sad",
-    "Surprise",
-    "Neutral",
+    'Angry','Disgust','Fear',
+    'Happy','Neutral','Sad','Surprise'
 ]
 
 WEIGHTS_PATH = Path(__file__).parent / "emotion_model.pth"
